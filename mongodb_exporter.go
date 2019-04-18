@@ -17,8 +17,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
-	"time"
 
 	"github.com/percona/exporter_shared"
 	"github.com/prometheus/client_golang/prometheus"
@@ -29,7 +27,6 @@ import (
 
 	"github.com/percona/mongodb_exporter/collector"
 	"github.com/percona/mongodb_exporter/shared"
-	pmmVersion "github.com/percona/pmm/version"
 )
 
 const (
@@ -128,29 +125,7 @@ func main() {
 }
 
 // initVersionInfo sets version info
-// If binary was build for PMM with environment variable PMM_RELEASE_VERSION
-// `--version` will be displayed in PMM format. Also `PMM Version` will be connected
-// to application version and will be printed in all logs.
-// TODO: Refactor after moving version.Info() and version.BuildContext() to https://github.com/percona/exporter_shared
-// See: https://jira.percona.com/browse/PMM-3250 and https://github.com/percona/mongodb_exporter/pull/132#discussion_r262227248
 func initVersionInfo() {
-	version.Version = pmmVersion.Version
-	version.Revision = pmmVersion.FullCommit
-	version.Branch = pmmVersion.Branch
-
-	if buildDate, err := strconv.ParseInt(pmmVersion.Timestamp, 10, 64); err != nil {
-		version.BuildDate = time.Unix(0, 0).Format(versionDataFormat)
-	} else {
-		version.BuildDate = time.Unix(buildDate, 0).Format(versionDataFormat)
-	}
-
-	if pmmVersion.PMMVersion != "" {
-		version.Version += "-pmm-" + pmmVersion.PMMVersion
-		kingpin.Version(pmmVersion.FullInfo())
-	} else {
-		kingpin.Version(version.Print(program))
-	}
-
 	kingpin.HelpFlag.Short('h')
-	kingpin.CommandLine.Help = fmt.Sprintf("%s exports various MongoDB metrics in Prometheus format.\n", pmmVersion.ShortInfo())
+	kingpin.CommandLine.Help = fmt.Sprintf("%s exports various MongoDB metrics in Prometheus format.\n", program)
 }

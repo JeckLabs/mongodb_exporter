@@ -10,6 +10,7 @@ require (
 	github.com/onsi/ginkgo v1.7.0 // indirect
 	github.com/onsi/gomega v1.4.3 // indirect
 	github.com/percona/exporter_shared v0.0.0-20180321061342-7d9e9cc0256a
+	github.com/percona/pmm v0.0.0-20190403124413-10a492f6476e
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v0.8.0
 	github.com/prometheus/client_model v0.0.0-20171117100541-99fa1f4be8e5 // indirect
